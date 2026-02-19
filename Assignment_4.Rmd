@@ -1,0 +1,55 @@
+---
+title: "Assignment 4"
+author: "RUBEL ROY(70)"
+date: "2026-02-19"
+output: word_document
+---
+
+```{r, include=FALSE}
+library(MASS)
+library(ISLR)
+library(car)
+library(stargazer)
+```
+
+
+## Problem to demonstrate the utility of nonlinear regression over linear regression.
+
+Get the fgl data set from “MASS” library.
+```{r}
+df1 = fgl
+head(df1)
+```
+
+
+###### **(a) Considering the refractive index (RI) of “Vehicle Window glass” as the variable of interest and assuming linearity of regression, run multiple linear regression of RI on different metallic oxides. From the p value, report which metallic oxide best explains the refractive index.**
+```{r}
+df1_subset = subset(df1, type == "Veh")
+model = lm(RI ~ Na + Mg + Al + Si + K + Ca + Ba + Fe, data = df1_subset)
+summary(model)
+
+```
+```{r, results="asis", warning=FALSE}
+cat(capture.output(stargazer(model, type="html")), sep="\n")
+```
+
+**Conclusion :** From the p-values, it is clear that Iron (Fe) oxide has the lowest p-value and hence best explains the refractive index(RI).
+
+-----------------------------------------------------------------------------------------------
+
+##### **(b) Run a simple linear regression of RI on the best predictor chosen in (a)**.
+```{r,warning=FALSE}
+fit_simple = lm(RI ~ Fe, data = df1_subset)
+summary(fit_simple)
+cat(capture.output(stargazer(fit_simple, type = "text")),sep="\n")
+
+```
+
+```{r, results='asis'}
+html_output <- capture.output(stargazer(fit_simple, type = "html"))
+cat(html_output, sep = "\n")
+```
+
+
+
+
